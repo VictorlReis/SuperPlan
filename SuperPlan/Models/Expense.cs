@@ -8,6 +8,5 @@ public class Expense
     public DateTime Date {get; set; }
     public string PaymentMethod {get; set; }
     public string Category {get; set; }
-    
     public int Month {get; set; }
 }

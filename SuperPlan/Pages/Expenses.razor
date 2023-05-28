@@ -1,12 +1,13 @@
-﻿@page "/expenses"
+﻿@page "/"
 @using SuperPlan.Models
 @inject Services.ExpenseService ExpenseService
+
 
 <h1>Expenses</h1>
 
 <p><button @onclick="ShowAddExpenseModal">Add Expense</button></p>
 
-<!-- Modal -->
+<!-- Add Expense Modal -->
 <div class="modal" style="display: @(showAddExpenseModal ? "block" : "none")">
     <div class="modal-content">
         <h2>Add Expense</h2>
