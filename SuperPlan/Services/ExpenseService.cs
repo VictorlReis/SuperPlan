@@ -1,32 +1,35 @@
-﻿using SuperPlan.Models;
+﻿using SuperPlan.Data.Repository;
+using SuperPlan.Models;
 
-namespace SuperPlan.Services;
-
-public class ExpenseService
+namespace SuperPlan.Services
 {
-    private List<Expense> Expenses { get; } = new();
-
-    public Task<List<Expense>> GetExpensesAsync() => Task.FromResult(Expenses);
-
-    public Task AddExpenseAsync(Expense expense)
+    public class ExpenseService
     {
-        Expenses.Add(expense);
-        return Task.CompletedTask;
-    }
+        private readonly IExpenseRepository _expenseRepository;
 
-    public Task EditExpenseAsync(Expense expense)
-    {
-        var index = Expenses.FindIndex(x => x.Id == expense.Id);
-        if (index != -1)
-            Expenses[index] = expense;
-        return Task.CompletedTask;
-    }
+        public ExpenseService(IExpenseRepository expenseRepository)
+        {
+            _expenseRepository = expenseRepository;
+        }
 
-    public Task DeleteExpenseAsync(int id)
-    {
-        var expense = Expenses.Find(x => x.Id == id);
-        if (expense != null)
-            Expenses.Remove(expense);
-        return Task.CompletedTask;
+        public async Task<List<Expense>> GetExpensesAsync()
+        {
+            return (await _expenseRepository.GetExpensesAsync()).ToList();
+        }
+
+        public async Task AddExpenseAsync(Expense expense)
+        {
+            await _expenseRepository.AddExpenseAsync(expense);
+        }
+
+        public async Task EditExpenseAsync(Expense expense)
+        {
+            await _expenseRepository.UpdateExpenseAsync(expense);
+        }
+
+        public async Task DeleteExpenseAsync(int id)
+        {
+            await _expenseRepository.DeleteExpenseAsync(id);
+        }
     }
 }

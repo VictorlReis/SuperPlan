@@ -4,7 +4,49 @@
 
 <h1>Expenses</h1>
 
-<p><button @onclick="AddExpense">Add Expense</button></p>
+<p><button @onclick="ShowAddExpenseModal">Add Expense</button></p>
+
+<!-- Modal -->
+<div class="modal" style="display: @(showAddExpenseModal ? "block" : "none")">
+    <div class="modal-content">
+        <h2>Add Expense</h2>
+
+        <div>
+            <label for="description">Description:</label>
+            <input type="text" id="description" @bind="@newExpense.Description" />
+        </div>
+
+        <div>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" @bind="@newExpense.Amount" />
+        </div>
+
+        <div>
+            <label for="date">Date:</label>
+            <input type="date" id="date" @bind="@newExpense.Date" />
+        </div>
+
+        <div>
+            <label for="paymentMethod">Payment Method:</label>
+            <input type="text" id="paymentMethod" @bind="@newExpense.PaymentMethod" />
+        </div>
+
+        <div>
+            <label for="category">Category:</label>
+            <input type="text" id="category" @bind="@newExpense.Category" />
+        </div>
+
+        <div>
+            <label for="month">Month:</label>
+            <input type="number" id="month" @bind="@newExpense.Month" />
+        </div>
+
+        <div class="modal-buttons">
+            <button @onclick="AddExpense">Save</button>
+            <button @onclick="CancelAddExpense">Cancel</button>
+        </div>
+    </div>
+</div>
 
 @if (expenseList == null)
 {
@@ -46,6 +88,8 @@ else
 
 @code {
     private List<Expense> expenseList;
+    private Expense newExpense = new Expense();
+    private bool showAddExpenseModal = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,12 +98,26 @@ else
 
     private async Task AddExpense()
     {
+        await ExpenseService.AddExpenseAsync(newExpense);
+        expenseList = await ExpenseService.GetExpensesAsync();
+        newExpense = new Expense();
+        showAddExpenseModal = false;
+    }
+
+    private void CancelAddExpense()
+    {
+        newExpense = new Expense();
+        showAddExpenseModal = false;
+    }
+
+    private void ShowAddExpenseModal()
+    {
+        showAddExpenseModal = true;
     }
 
     private async Task EditExpense(Expense expense)
     {
-        // Here you can add the code to edit an expense.
-        // Since it's likely to be an async operation, you should await it
+        await ExpenseService.EditExpenseAsync(expense);
         expenseList = await ExpenseService.GetExpensesAsync();
     }
 
