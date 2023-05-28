@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using SuperPlan.Data;
 using SuperPlan.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<ExpenseService>();
+builder.Services.AddDbContext<SuperPlanDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

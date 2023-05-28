@@ -6,7 +6,7 @@
 
 <p><button @onclick="AddExpense">Add Expense</button></p>
 
-@if (ExpensesList == null)
+@if (expenseList == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -18,16 +18,22 @@ else
             <th>Description</th>
             <th>Amount</th>
             <th>Date</th>
+            <th>Payment Method</th>
+            <th>Category</th>
+            <th>Month</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var expense in ExpensesList)
+        @foreach (var expense in expenseList)
         {
             <tr>
                 <td>@expense.Description</td>
                 <td>@expense.Amount</td>
                 <td>@expense.Date.ToShortDateString()</td>
+                <td>@expense.PaymentMethod</td>
+                <td>@expense.Category</td>
+                <td>@expense.Month</td>
                 <td>
                     <button @onclick="() => EditExpense(expense)">Edit</button>
                     <button @onclick="() => DeleteExpense(expense.Id)">Delete</button>
@@ -39,30 +45,27 @@ else
 }
 
 @code {
-    private List<Expense> ExpensesList;
+    private List<Expense> expenseList;
 
     protected override async Task OnInitializedAsync()
     {
-        ExpensesList = await ExpenseService.GetExpensesAsync();
+        expenseList = await ExpenseService.GetExpensesAsync();
     }
 
     private async Task AddExpense()
     {
-    // Here you can add the code to add an expense.
-    // Since it's likely to be an async operation, you should await it
     }
 
     private async Task EditExpense(Expense expense)
     {
-    // Here you can add the code to edit an expense.
-    // Since it's likely to be an async operation, you should await it
-        ExpensesList = await ExpenseService.GetExpensesAsync();
+        // Here you can add the code to edit an expense.
+        // Since it's likely to be an async operation, you should await it
+        expenseList = await ExpenseService.GetExpensesAsync();
     }
 
     private async Task DeleteExpense(int id)
     {
         await ExpenseService.DeleteExpenseAsync(id);
-        ExpensesList = await ExpenseService.GetExpensesAsync();
+        expenseList = await ExpenseService.GetExpensesAsync();
     }
 }
-
