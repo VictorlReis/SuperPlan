@@ -72,7 +72,7 @@ Para usar o SQL Server com Docker, você deve executar os seguintes passos:
 4. **Conecte-se ao SQL Server**: Agora, você pode conectar-se ao SQL Server. A string de conexão será algo como:
 
     ```csharp
-    "Server=localhost,1433;Database=master;User Id=sa;Password={your_password};"
+    "Server=localhost,1433;Database=SuperPlan;User ID=sa;Password=YourPassword;Trusted_Connection=False; TrustServerCertificate=True;"
     ```
 
    Substitua `{your_password}` pela senha que você usou no passo 3.
