@@ -10,7 +10,7 @@ Antes de começar, certifique-se de ter atendido aos seguintes requisitos:
 - Você instalou o Visual Studio 2022 ou superior. Baixe [aqui](https://visualstudio.microsoft.com/vs/).
 - Você tem uma máquina Windows, Linux ou macOS.
 
-## Instalando o SuperPlan
+## 1 Instalando o SuperPlan
 
 Para instalar o SuperPlan, siga estas etapas:
 
@@ -32,7 +32,7 @@ cd superplan
 dotnet restore
 ```
 
-## Usando o SuperPlan
+## 2. Usando o SuperPlan
 
 Para usar o SuperPlan, siga estas etapas:
 
@@ -48,8 +48,36 @@ dotnet build
 dotnet run
 ```
 
-## Configurando a Conexão com o Banco de Dados
+## 3. Configurando a Conexão com o Banco de Dados
 
+### SQL Server no docker:
+
+Para usar o SQL Server com Docker, você deve executar os seguintes passos:
+
+1. **Instale o Docker**: Se você ainda não instalou o Docker em seu computador, pode baixá-lo do [site oficial do Docker](https://www.docker.com/products/docker-desktop).
+
+2. **Baixe a imagem do SQL Server para Docker**: Execute o seguinte comando no terminal para baixar a imagem do SQL Server 2019 para Linux:
+
+    ```bash
+    docker pull mcr.microsoft.com/mssql/server:2019-latest
+    ```
+
+3. **Execute a imagem do SQL Server**: Depois de baixar a imagem, você precisa executá-la. Substitua `{your_password}` por uma senha segura de sua escolha:
+
+    ```bash
+    docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD={your_password}" \
+       -p 1433:1433 --name sql_server \
+       -d mcr.microsoft.com/mssql/server:2019-latest
+    ```
+4. **Conecte-se ao SQL Server**: Agora, você pode conectar-se ao SQL Server. A string de conexão será algo como:
+
+    ```csharp
+    "Server=localhost,1433;Database=master;User Id=sa;Password={your_password};"
+    ```
+
+   Substitua `{your_password}` pela senha que você usou no passo 3.
+
+### Secret Manager
 Este projeto usa o Secret Manager do .NET Core para armazenar a string de conexão do banco de dados de forma segura. Para configurar a string de conexão em sua máquina local, siga as instruções abaixo:
 
 1. **Instalar a Ferramenta Secret Manager**:
@@ -79,5 +107,3 @@ Este projeto usa o Secret Manager do .NET Core para armazenar a string de conex�
 Agora, quando você executar o projeto em sua máquina local, ele usará essa string de conexão para se conectar ao banco de dados. Lembre-se de que os segredos do usuário não são criptografados e não devem ser usados em ambientes de produção.
 
 ---
-
-Apenas ajuste as instruções de acordo com o que se aplica ao seu projeto e ambiente específicos.
